@@ -1,6 +1,9 @@
 use substrait::proto;
 
+use crate::plans::expressions::Expression;
 use crate::types::NamedStruct;
+
+mod expressions;
 
 #[derive(Debug)]
 pub struct Plan {
@@ -82,7 +85,7 @@ impl From<&proto::ReadRel> for Read {
 #[derive(Debug)]
 pub struct Project {
     pub input: Box<Rel>,
-    pub expressions: Vec<String>,
+    pub expressions: Vec<Expression>,
 }
 
 impl From<&proto::ProjectRel> for Project {
@@ -90,7 +93,11 @@ impl From<&proto::ProjectRel> for Project {
         let input = pr.input.as_ref().expect("project input must be set");
         Project {
             input: Box::new(Rel::from(input.as_ref())),
-            expressions: vec![],
+            expressions: pr
+                .expressions
+                .iter()
+                .map(|expr| Expression::from(expr))
+                .collect(),
         }
     }
 }
