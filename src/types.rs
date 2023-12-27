@@ -2,6 +2,7 @@ use substrait::proto;
 
 #[derive(Debug)]
 pub enum Type {
+    I32 { nullable: bool },
     I64 { nullable: bool },
     FP64 { nullable: bool },
     String { nullable: bool },
@@ -52,16 +53,18 @@ impl From<&proto::Type> for Type {
             // Kind::Bool(_) => {}
             // Kind::I8(_) => {}
             // Kind::I16(_) => {}
-            // Kind::I32(_) => {}
-            substrait::proto::r#type::Kind::I64(i64) => Type::I64 {
-                nullable: nullability(i64.nullability),
+            substrait::proto::r#type::Kind::I32(v) => Type::I32 {
+                nullable: nullability(v.nullability),
+            },
+            substrait::proto::r#type::Kind::I64(v) => Type::I64 {
+                nullable: nullability(v.nullability),
             },
             // Kind::Fp32(_) => {}
-            substrait::proto::r#type::Kind::Fp64(fp64) => Type::FP64 {
-                nullable: nullability(fp64.nullability),
+            substrait::proto::r#type::Kind::Fp64(v) => Type::FP64 {
+                nullable: nullability(v.nullability),
             },
-            substrait::proto::r#type::Kind::String(s) => Type::String {
-                nullable: nullability(s.nullability),
+            substrait::proto::r#type::Kind::String(v) => Type::String {
+                nullable: nullability(v.nullability),
             },
             // Kind::Binary(_) => {}
             // Kind::Timestamp(_) => {}
