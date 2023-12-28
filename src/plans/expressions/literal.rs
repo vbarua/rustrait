@@ -56,20 +56,16 @@ impl From<&proto::expression::Literal> for Literal {
     }
 }
 
-#[derive(Debug)]
-pub struct Bool {
-    pub value: bool,
-    pub nullable: bool,
+macro_rules! literal_struct {
+    ($literal_name: ident, $literal_type: tt) => {
+        #[derive(Debug)]
+        pub struct $literal_name {
+            pub value: $literal_type,
+            pub nullable: bool
+        }
+    }
 }
 
-#[derive(Debug)]
-pub struct I32 {
-    pub value: i32,
-    pub nullable: bool,
-}
-
-#[derive(Debug)]
-pub struct I64 {
-    pub value: i64,
-    pub nullable: bool,
-}
+literal_struct![Bool, bool];
+literal_struct![I32, i32];
+literal_struct![I64, i64];
