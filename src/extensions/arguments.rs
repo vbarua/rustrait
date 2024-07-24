@@ -13,23 +13,23 @@ pub enum Argument {
 impl From<simple_extensions::ArgumentsItem> for Argument {
     fn from(ai: simple_extensions::ArgumentsItem) -> Self {
         match ai {
-            // enum
-            simple_extensions::ArgumentsItem::Variant0 { .. } => {
+            simple_extensions::ArgumentsItem::EnumerationArg { .. } => {
                 panic!("cannot handle enum argument")
             }
             // value
-            simple_extensions::ArgumentsItem::Variant1 {
-                constant,
-                name,
-                value,
-                ..
-            } => Argument::Value {
+            simple_extensions::ArgumentsItem::ValueArg(
+                simple_extensions::ValueArg
+                {
+                    constant,
+                    name,
+                    value,
+                    ..
+                }) => Argument::Value {
                 name: name,
                 value: Type::from(value),
                 is_constant: constant.unwrap_or(false),
             },
-            // type
-            simple_extensions::ArgumentsItem::Variant2 { .. } => {
+            simple_extensions::ArgumentsItem::TypeArg { .. } => {
                 panic!("cannot handle type argument")
             }
         }
