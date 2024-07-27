@@ -1,6 +1,15 @@
 {
-  "extensionUris": [],
-  "extensions": [],
+  "extensionUris": [{
+    "extensionUriAnchor": 1,
+    "uri": "/functions_arithmetic.yaml"
+  }],
+  "extensions": [{
+    "extensionFunction": {
+      "extensionUriReference": 1,
+      "functionAnchor": 0,
+      "name": "add:i32_i32"
+    }
+  }],
   "relations": [{
     "root": {
       "input": {
@@ -20,7 +29,7 @@
                 "names": ["BAR"],
                 "struct": {
                   "types": [{
-                    "i64": {
+                    "i32": {
                       "typeVariationReference": 0,
                       "nullability": "NULLABILITY_NULLABLE"
                     }
@@ -35,19 +44,42 @@
             }
           },
           "expressions": [{
-            "selection": {
-              "directReference": {
-                "structField": {
-                  "field": 0
+            "scalarFunction": {
+              "functionReference": 0,
+              "args": [],
+              "outputType": {
+                "i32": {
+                  "typeVariationReference": 0,
+                  "nullability": "NULLABILITY_NULLABLE"
                 }
               },
-              "rootReference": {
-              }
+              "arguments": [{
+                "value": {
+                  "selection": {
+                    "directReference": {
+                      "structField": {
+                        "field": 0
+                      }
+                    },
+                    "rootReference": {
+                    }
+                  }
+                }
+              }, {
+                "value": {
+                  "literal": {
+                    "i32": 1,
+                    "nullable": false,
+                    "typeVariationReference": 0
+                  }
+                }
+              }],
+              "options": []
             }
           }]
         }
       },
-      "names": ["BAR"]
+      "names": ["EXPR$0"]
     }
   }],
   "expectedTypeUrls": []

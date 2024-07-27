@@ -1,5 +1,3 @@
-use substrait::proto;
-
 #[derive(Debug)]
 pub enum Type {
     I32 { nullable: bool },
@@ -17,74 +15,16 @@ pub struct NamedStruct {
     pub types: Vec<Type>,
 }
 
-impl From<&proto::NamedStruct> for NamedStruct {
-    fn from(ns: &proto::NamedStruct) -> Self {
-        NamedStruct {
-            names: ns.names.clone(),
-            types: ns
-                .r#struct
-                .as_ref()
-                .expect("types should be present")
-                .types
-                .iter()
-                .map(|t| Type::from(t))
-                .collect(),
-        }
-    }
-}
-
 const NULLABILITY_UNSPECIFIED: i32 = 0;
 const NULLABILITY_NULLABLE: i32 = 1;
 const NULLABILITY_REQUIRED: i32 = 2;
 
-fn nullability(n: i32) -> bool {
+pub fn nullability(n: i32) -> bool {
     match n {
         NULLABILITY_UNSPECIFIED => panic!("nullability must be specified"),
         NULLABILITY_NULLABLE => return false,
         NULLABILITY_REQUIRED => return true,
         _ => panic!("you are using a secret 4th nullability {}. please don't", n),
-    }
-}
-
-impl From<&proto::Type> for Type {
-    fn from(t: &proto::Type) -> Self {
-        let kind = t.kind.as_ref().expect("kind must be set");
-        match kind {
-            // Kind::Bool(_) => {}
-            // Kind::I8(_) => {}
-            // Kind::I16(_) => {}
-            substrait::proto::r#type::Kind::I32(v) => Type::I32 {
-                nullable: nullability(v.nullability),
-            },
-            substrait::proto::r#type::Kind::I64(v) => Type::I64 {
-                nullable: nullability(v.nullability),
-            },
-            // Kind::Fp32(_) => {}
-            substrait::proto::r#type::Kind::Fp64(v) => Type::FP64 {
-                nullable: nullability(v.nullability),
-            },
-            substrait::proto::r#type::Kind::String(v) => Type::String {
-                nullable: nullability(v.nullability),
-            },
-            // Kind::Binary(_) => {}
-            // Kind::Timestamp(_) => {}
-            // Kind::Date(_) => {}
-            // Kind::Time(_) => {}
-            // Kind::IntervalYear(_) => {}
-            // Kind::IntervalDay(_) => {}
-            // Kind::TimestampTz(_) => {}
-            // Kind::Uuid(_) => {}
-            // Kind::FixedChar(_) => {}
-            // Kind::Varchar(_) => {}
-            // Kind::FixedBinary(_) => {}
-            // Kind::Decimal(_) => {}
-            // Kind::Struct(_) => {}
-            // Kind::List(_) => {}
-            // Kind::Map(_) => {}
-            // Kind::UserDefined(_) => {}
-            // Kind::UserDefinedTypeReference(_) => {}
-            _ => panic!("cannot handle type: {:?}", kind),
-        }
     }
 }
 

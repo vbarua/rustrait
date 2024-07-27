@@ -17,14 +17,12 @@ impl From<simple_extensions::ArgumentsItem> for Argument {
                 panic!("cannot handle enum argument")
             }
             // value
-            simple_extensions::ArgumentsItem::ValueArg(
-                simple_extensions::ValueArg
-                {
-                    constant,
-                    name,
-                    value,
-                    ..
-                }) => Argument::Value {
+            simple_extensions::ArgumentsItem::ValueArg(simple_extensions::ValueArg {
+                constant,
+                name,
+                value,
+                ..
+            }) => Argument::Value {
                 name: name,
                 value: Type::from(value),
                 is_constant: constant.unwrap_or(false),

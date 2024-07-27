@@ -1,3 +1,7 @@
+mod decoder;
+mod plans;
+mod types;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }

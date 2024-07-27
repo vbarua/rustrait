@@ -1,8 +1,8 @@
+use crate::decoder::decode_prost_plan;
 use substrait::proto;
 use substrait::text::simple_extensions::SimpleExtensions;
 
-use prost::Message;
-
+pub mod decoder;
 pub mod extensions;
 pub mod plans;
 pub mod types;
@@ -32,6 +32,6 @@ fn main() {
     let extensions = extensions::Extensions::from(simple_extension.expect("boom"));
     dbg!(extensions);
 
-    let plan = plans::Plan::from(&proto_plan);
+    let plan = decode_prost_plan(&proto_plan);
     dbg!(plan);
 }
