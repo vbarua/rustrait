@@ -1,0 +1,10 @@
+[package]
+name = "rustrait-datafusion"
+version = "0.0.0"
+edition.workspace = true
+
+[dependencies]
+datafusion = "40.0.0"
+
+# local deps
+rustrait-core.workspace = true
